@@ -96,3 +96,6 @@ group by Main_Category,Sub_Category order by Main_Category, Total_Income desc;
 select Region, Product_Line, 
 ROUND(avg(Retail_Price),2)as AVG_Price, ROUND(sum(Revenue_Usd*(Online_Sales_Percentage/100)),0) as Online_Income
 from nike_sales_2024 group by Region, Product_Line order by Region;
+
+-- Data from: https://www.kaggle.com/datasets/ayushcx/nike-global-sales-data-2024?resource=download 
+--Tableau: https://public.tableau.com/app/profile/doroteja.djordjevic/vizzes
