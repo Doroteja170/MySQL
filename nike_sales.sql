@@ -1,13 +1,5 @@
 -- Analyzing Nike sales for 2024
--- Skills used: Window Functions, CTE's, Aggregate Functions, String Functions
-
-select * from nike_sales_2024;
-
--- Using Window Function to check if there are any duplicates in the table
-select *, row_number() over 
-(partition by Month,Region,Main_Category,Sub_Category,Product_Line,Price_Tier,Units_Sold,
-Revenue_USD,Online_Sales_Percentage,Retail_Price)as rownum 
-from nike_sales_2024;
+-- Skills used: CTE's, Aggregate Functions, String Functions
 
 -- Select data we are starting with
 SELECT Month,Region,
