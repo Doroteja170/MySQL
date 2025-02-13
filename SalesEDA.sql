@@ -255,3 +255,27 @@ order by TIMESTAMPDIFF(YEAR, BirthDate, CURDATE());
 select e.FullName,c.CityName,cu.CountryName from employees e
 join cities c on e.CityID=c.CityID
 join countries cu on c.CountryID=cu.CountryID;
+
+-- Best-Performing Customers
+with cte1 as
+(select count(s.SalesID) as Sales ,sum(s.Quantity)as Quantity,c.FullName as FullName,round(sum(p.Price*s.Quantity),2) as Income
+from sales s
+join products p on s.ProductID=p.ProductID
+join customers c on s.CustomerID=c.CustomerID
+where s.Discount=0
+group by c.FullName
+),
+cte2 as
+(select count(s.SalesID) as Sales ,sum(s.Quantity)as Quantity,c.FullName as FullName,round(sum(p.Price*s.Quantity),2) as Income
+from sales s
+join products p on s.ProductID=p.ProductID
+join customers c on s.CustomerID=c.CustomerID
+where s.Discount>0
+group by c.FullName
+)
+select cte1.FullName,sum(cte1.Sales+cte2.Sales)as Total_Sales,sum(cte1.Quantity+cte2.Quantity) as Total_Quantity,
+round(sum(cte1.Income+cte2.Income),2)as Total_Purchase from cte1
+join cte2 on cte1.FullName=cte2.FullName
+group by cte1.FullName
+order by round(sum(cte1.Income+cte2.Income),2) DESC
+LIMIT 10;
