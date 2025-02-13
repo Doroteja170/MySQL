@@ -69,11 +69,28 @@ join employees e on s.SalesPersonID=e.EmployeeID;
 select s.SalesPersonID, e.FullName from sales s
 left join employees e on s.SalesPersonID=e.EmployeeID;
 
--- Employees and their Total Sales
-select e.FullName, count(s.SalesPersonID) as Total_Sales from sales s
-left join employees e on s.SalesPersonID=e.EmployeeID
+-- Total Income and Total Sales by Emoloyee
+with cte1 as
+(select count(s.SalesID) as Sales,e.FullName as Employee,round(sum(p.Price*s.Quantity),2) as Income
+from sales s
+join products p on s.ProductID=p.ProductID
+join employees e on s.SalesPersonID=e.EmployeeID
+where s.Discount=0
 group by e.FullName
-order by count(s.SalesPersonID) DESC;
+),
+cte2 as
+(select count(s.SalesID) as Sales,e.FullName as Employee ,round(sum(p.Price*s.Quantity),2) as Income
+from sales s
+join products p on s.ProductID=p.ProductID
+join employees e on s.SalesPersonID=e.EmployeeID
+where s.Discount>0
+group by e.FullName
+)
+select cte1.Employee,sum(cte1.Sales+cte2.Sales)as Total_Sales,
+round(sum(cte1.Income+cte2.Income),2)as Total_Income from cte1
+join cte2 on cte1.Employee=cte2.Employee
+group by cte1.Employee
+order by round(sum(cte1.Income+cte2.Income),2) DESC;
 
 -- Total Employees Hired per Year
 select YEAR(HireDate), count(EmployeeID) as Total_Employees from employees
@@ -93,7 +110,7 @@ select * from sales;
 
 -- Total Income, Total Sales and Total Quantity by Products
 with cte1 as
-(select count(s.CustomerID) as Sales, sum(s.Quantity)as Quantity,p.ProductName as ProductName,round(sum(p.Price*s.Quantity),2) as Income
+(select count(s.SalesID) as Sales, sum(s.Quantity)as Quantity,p.ProductName as ProductName,round(sum(p.Price*s.Quantity),2) as Income
 ,c.CategoryName as CategoryName
 from sales s
 join products p on s.ProductID=p.ProductID
@@ -102,7 +119,7 @@ where s.Discount=0
 group by p.ProductName,c.CategoryName
 ),
 cte2 as
-(select count(s.CustomerID) as Sales,sum(s.Quantity)as Quantity,p.ProductName as ProductName,
+(select count(s.SalesID) as Sales,sum(s.Quantity)as Quantity,p.ProductName as ProductName,
 round(sum(p.Price*s.Quantity*(1-s.Discount)),2) as Income
 ,c.CategoryName
 from sales s
