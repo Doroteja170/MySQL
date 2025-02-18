@@ -1,4 +1,4 @@
--- Formula 1 Data Exploration
+-- In this project I analyzed Formula 1 data for the 2024 season in MySQL, focusing on data cleaning, processing, and extracting insights.
 
 -- Data Formating
 update drivers
