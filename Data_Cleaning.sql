@@ -1,5 +1,4 @@
 -- Data Cleaning in MySQL
--- We used jobs.csv table for this project
 
 select * from jobs;
 
