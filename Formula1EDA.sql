@@ -1,4 +1,5 @@
 -- In this project I analyzed Formula 1 data for the 2024 season in MySQL, focusing on data cleaning, processing, and extracting insights.
+-- Data: https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020
 
 -- Data Formating
 update drivers
