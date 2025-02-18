@@ -233,3 +233,8 @@ join constructors c on re.constructorId=c.constructorId
 where r.year=2024 
 group by d.FullName,r.date,c.Constructor
 order by r.date,sum(re.points) desc;
+
+-- 2024 Circuits
+select c.name,c.location,c.country,r.name from races r
+join circuits c on r.circuitId=c.circuitId
+where r.year=2024;
