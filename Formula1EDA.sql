@@ -234,6 +234,36 @@ where r.year=2024
 group by d.FullName,r.date,c.Constructor
 order by r.date,sum(re.points) desc;
 
+-- Total Race Starts for Drivers from 2024 Grid
+with cte as (
+select d.driverId,concat(d.FirstName,' ',d.LastName)as fullname, count(r.driverId) Race_Start from results r
+join drivers d on r.driverId=d.driverId
+group by d.FirstName,d.LastName,d.driverId
+order by count(r.driverId) desc
+),
+cte2 as (
+select distinct(concat(d.FirstName,' ',d.LastName)) as fullName,d.driverId from results r
+join drivers d on r.driverId=d.driverId
+join races ra on r.raceId=ra.raceId
+where ra.year=2024
+)
+select cte.fullname,cte.Race_Start from cte
+join cte2 on cte.driverId=cte2.driverId
+
+-- Average Grid Position for the Drivers in 2024
+select concat(d.FirstName,' ',d.LastName)as fullname, round(avg(r.grid))Avg_Grid_Position from results r
+join drivers d on r.driverId=d.driverId
+join races ra on r.raceId=ra.raceId
+where ra.year=2024
+group by d.FirstName,d.LastName,d.driverId;
+
+-- Average Finish Position for the Drivers in 2024
+select concat(d.FirstName,' ',d.LastName)as fullname, round(avg(r.position))Avg_Finish_Position from results r
+join drivers d on r.driverId=d.driverId
+join races ra on r.raceId=ra.raceId
+where ra.year=2024
+group by d.FirstName,d.LastName,d.driverId;
+    
 -- 2024 Circuits
 select c.name,c.location,c.country,r.name from races r
 join circuits c on r.circuitId=c.circuitId
