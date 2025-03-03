@@ -90,6 +90,5 @@ ROUND(avg(Retail_Price),2)as AVG_Price, ROUND(sum(Revenue_Usd*(Online_Sales_Perc
 from nike_sales_2024 group by Region, Product_Line order by Region;
 
 -- Data from: https://www.kaggle.com/datasets/ayushcx/nike-global-sales-data-2024?resource=download 
--- Tableau: https://public.tableau.com/app/profile/doroteja.djordjevic/vizzes
 -- This analysis of Nike's 2024 sales data explores regional pricing strategies, income distribution, 
 -- product performance, and the impact of retail prices on online and in-store sales.
